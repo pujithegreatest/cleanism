@@ -214,6 +214,7 @@ struct CameraView: View {
 
         do {
             let result = try await AIService.analyzeImage(base64Image: base64, contextDescription: contextDescription)
+            print("DEBUG: AI Analysis successful. Task: \(result.taskName)")
 
             let imageName = ImageStore.save(image, name: UUID().uuidString)
 
@@ -232,7 +233,8 @@ struct CameraView: View {
             dismiss()
         } catch {
             isAnalyzing = false
-            errorMessage = "Analysis failed. Please try again."
+            print("DEBUG: AI Analysis Error: \(error.localizedDescription)")
+            errorMessage = "Analysis failed: \(error.localizedDescription)"
         }
     }
 }

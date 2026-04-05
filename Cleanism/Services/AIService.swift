@@ -11,6 +11,7 @@ class AIService {
     }
 
     static func analyzeImage(base64Image: String, contextDescription: String) async throws -> AIAnalysisResult {
+        print("DEBUG: Starting analyzeImage. API Key present: \(!apiKey.isEmpty)")
         let url = URL(string: "https://api.openai.com/v1/chat/completions")!
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
@@ -52,7 +53,16 @@ class AIService {
 
         let (data, response) = try await URLSession.shared.data(for: request)
 
-        guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
+        guard let httpResponse = response as? HTTPURLResponse else {
+            print("DEBUG: Response is not HTTPURLResponse")
+            throw AIError.requestFailed
+        }
+
+        print("DEBUG: HTTP Status Code: \(httpResponse.statusCode)")
+
+        guard httpResponse.statusCode == 200 else {
+            let responseStr = String(data: data, encoding: .utf8) ?? "No response"
+            print("DEBUG: API Error Response: \(responseStr)")
             throw AIError.requestFailed
         }
 
@@ -60,9 +70,11 @@ class AIService {
         guard let choices = json?["choices"] as? [[String: Any]],
               let message = choices.first?["message"] as? [String: Any],
               let content = message["content"] as? String else {
+            print("DEBUG: Failed to parse response. JSON: \(json ?? [:])")
             throw AIError.invalidResponse
         }
 
+        print("DEBUG: AI Response Content: \(content)")
         return try parseAnalysisResult(from: content)
     }
 
@@ -98,7 +110,16 @@ class AIService {
 
         let (data, response) = try await URLSession.shared.data(for: request)
 
-        guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
+        guard let httpResponse = response as? HTTPURLResponse else {
+            print("DEBUG: Response is not HTTPURLResponse")
+            throw AIError.requestFailed
+        }
+
+        print("DEBUG: HTTP Status Code: \(httpResponse.statusCode)")
+
+        guard httpResponse.statusCode == 200 else {
+            let responseStr = String(data: data, encoding: .utf8) ?? "No response"
+            print("DEBUG: API Error Response: \(responseStr)")
             throw AIError.requestFailed
         }
 
@@ -106,9 +127,11 @@ class AIService {
         guard let choices = json?["choices"] as? [[String: Any]],
               let message = choices.first?["message"] as? [String: Any],
               let content = message["content"] as? String else {
+            print("DEBUG: Failed to parse response. JSON: \(json ?? [:])")
             throw AIError.invalidResponse
         }
 
+        print("DEBUG: AI Response Content: \(content)")
         return try parseAnalysisResult(from: content)
     }
 
