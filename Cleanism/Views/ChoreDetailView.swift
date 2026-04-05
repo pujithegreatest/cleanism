@@ -105,12 +105,10 @@ struct ChoreDetailView: View {
                 Spacer()
 
                 if let img = selectedImageForEnlargement {
-                    print("DEBUG: Image found, rendering. Size: \(img.size)")
                     Image(uiImage: img)
                         .resizable()
                         .scaledToFit()
                 } else {
-                    print("DEBUG: selectedImageForEnlargement is nil!")
                     Text("No image to display")
                         .foregroundColor(.white)
                 }
@@ -120,6 +118,11 @@ struct ChoreDetailView: View {
         }
         .onAppear {
             print("DEBUG: Enlarged image view appeared. selectedImageForEnlargement: \(selectedImageForEnlargement != nil)")
+            if let img = selectedImageForEnlargement {
+                print("DEBUG: Image found, rendering. Size: \(img.size)")
+            } else {
+                print("DEBUG: selectedImageForEnlargement is nil!")
+            }
         }
     }
 
