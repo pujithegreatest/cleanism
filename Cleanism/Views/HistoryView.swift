@@ -24,12 +24,15 @@ struct HistoryView: View {
             }
             .background(c.background)
             .navigationBarHidden(true)
-            .navigationDestination(isPresented: .constant(selectedChoreId != nil)) {
-                if let choreId = selectedChoreId {
-                    ChoreDetailView(choreId: choreId)
-                        .environmentObject(choreStore)
-                        .environmentObject(themeStore)
-                }
+        }
+        .navigationDestination(isPresented: Binding(
+            get: { selectedChoreId != nil },
+            set: { if !$0 { selectedChoreId = nil } }
+        )) {
+            if let choreId = selectedChoreId {
+                ChoreDetailView(choreId: choreId)
+                    .environmentObject(choreStore)
+                    .environmentObject(themeStore)
             }
         }
     }

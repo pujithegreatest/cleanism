@@ -83,22 +83,21 @@ struct ChoreDetailView: View {
                 .environmentObject(choreStore)
                 .environmentObject(themeStore)
         }
-        .fullScreenCover(isPresented: .constant(imageTypeToReplace != nil)) {
-            if imageTypeToReplace == "before" {
-                AfterCameraView(choreId: choreId, isBeforePhoto: true)
-                    .environmentObject(choreStore)
-                    .environmentObject(themeStore)
-                    .onDisappear {
-                        imageTypeToReplace = nil
-                    }
-            } else if imageTypeToReplace == "after" {
-                AfterCameraView(choreId: choreId)
-                    .environmentObject(choreStore)
-                    .environmentObject(themeStore)
-                    .onDisappear {
-                        imageTypeToReplace = nil
-                    }
-            }
+        .fullScreenCover(isPresented: Binding(
+            get: { imageTypeToReplace == "before" },
+            set: { if !$0 { imageTypeToReplace = nil } }
+        )) {
+            AfterCameraView(choreId: choreId, isBeforePhoto: true)
+                .environmentObject(choreStore)
+                .environmentObject(themeStore)
+        }
+        .fullScreenCover(isPresented: Binding(
+            get: { imageTypeToReplace == "after" },
+            set: { if !$0 { imageTypeToReplace = nil } }
+        )) {
+            AfterCameraView(choreId: choreId)
+                .environmentObject(choreStore)
+                .environmentObject(themeStore)
         }
         .sheet(isPresented: $showEnlargedImage) {
             enlargedImageView(themeStore.colors)
@@ -676,6 +675,9 @@ struct ChoreDetailView: View {
                 choreStore.uncompleteChore(id: choreId)
             } else {
                 choreStore.completeChore(id: choreId)
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                    dismiss()
+                }
             }
         } label: {
             HStack(spacing: 8) {
