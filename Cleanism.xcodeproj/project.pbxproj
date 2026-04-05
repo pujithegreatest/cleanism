@@ -25,8 +25,8 @@
 		C22EF657F3BC40D1E951563F /* Chore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 014A2EA761A6E36B59F89998 /* Chore.swift */; };
 		CAC8E7ED861BDEED1159F1FC /* AddChoreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A4C54D561351D83BFCB738B /* AddChoreView.swift */; };
 		E37418F7269811C2D7D4662A /* ChoreDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 498D3DDED576F0DAD358D0A9 /* ChoreDetailView.swift */; };
-		E7DCA33C3AD80DCAC0D16335 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 634FA86AE2D9D2FB430E7999 /* SettingsView.swift */; };
-				8CBDBE76C7EFF28F6EA99093 /* Affirmations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EA6D829C854E083B7E477C2 /* Affirmations.swift */; };
+		E7DCA33C3AD80DCAC0D16335 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 634FA86AE2D9D2FB430E7999 /* SettingsView.swift */; }; = {isa = PBXBuildFile; fileRef =; };
+			AFFM01BUILD0001001001001 /* Affirmations.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFFM01FILEREF001001001001 /* Affirmations.swift */; };
 	/* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -50,8 +50,8 @@
 		B585165546DC0533F6DFE550 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		D8DC880648D47CA3F209A3EC /* NativePhotoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NativePhotoView.swift; sourceTree = "<group>"; };
 		D9223FDEA9907F427A757586 /* EnvConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnvConfig.swift; sourceTree = "<group>"; };
-		E0ACB8CB787C34A99904438A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
-				3EA6D829C854E083B7E477C2 /* Affirmations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Affirmations.swift; sourceTree = "<group>"; };
+		E0ACB8CB787C34A99904438A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; }; = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Affirmations.swift; sourceTree = "<group>"; };
+			AFFM01FILEREF001001001001 /* Affirmations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Affirmations.swift; sourceTree = "<group>"; };
 	/* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -132,7 +132,8 @@
 		F57C87A3DFA4E1687782754A /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				16A908D24843AC45DF5CAAD1 /* AppTheme.swift */,
+				
+				AFFM01FILEREF001001001001 /* Affirmations.swift */,16A908D24843AC45DF5CAAD1 /* AppTheme.swift */,
 				014A2EA761A6E36B59F89998 /* Chore.swift */,
 			);
 			path = Models;
@@ -213,9 +214,7 @@
 				758891FACBF1990C4047FC5D /* AfterCameraView.swift in Sources */,
 				277F333D75D66F8AE6ADA39A /* AppTheme.swift in Sources */,
 				750509989ABE908F98927C03 /* CameraView.swift in Sources */,
-				C22EF657F3BC40D1E951563F /* Chore.swift in Sources */,
-				8CBDBE76C7EFF28F6EA99093 /* Affirmations.swift in Sources */,
-				15CA24F6FDE1227937E6E532 /* ChoreCardView.swift in Sources */,
+				C22EF657F3BC40D1E951563F /* Chore.swift in Sources */,				15CA24F6FDE1227937E6E532 /* ChoreCardView.swift in Sources */,
 				E37418F7269811C2D7D4662A /* ChoreDetailView.swift in Sources */,
 				158985300A4EEBAB1C5A2A4E /* ChoreStore.swift in Sources */,
 				A2B08F231BD8808E0D77EB6C /* CleanismApp.swift in Sources */,
@@ -227,7 +226,8 @@
 				5E8DE7FE5E1224B84944C79A /* NativePhotoView.swift in Sources */,
 				E7DCA33C3AD80DCAC0D16335 /* SettingsView.swift in Sources */,
 				4DD2988EAB1A35A8407D1951 /* ThemeStore.swift in Sources */,
-			);
+			
+				AFFM01BUILD0001001001001 /* Affirmations.swift in Sources */,);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
