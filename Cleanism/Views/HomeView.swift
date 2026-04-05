@@ -5,8 +5,65 @@ struct HomeView: View {
     @EnvironmentObject var themeStore: ThemeStore
 
     @State private var selectedFilter: AreaTag? = nil
-    @State private var affirmation = Affirmations.randomQuote()
+    @State private var affirmation = Self.randomAffirmation()
     @State private var showAddChore = false
+
+    private static let affirmations = [
+        "You are capable of amazing things",
+        "Today is going to be a great day",
+        "You've got this",
+        "Progress, not perfection",
+        "Be proud of yourself",
+        "You are stronger than you think",
+        "Keep going, you're doing great",
+        "Every step forward counts",
+        "You are enough",
+        "Your effort matters",
+        "You're making a difference",
+        "Stay focused on what you can control",
+        "You have what it takes",
+        "Good things take time",
+        "You deserve to feel proud",
+        "Success is a journey, not a destination",
+        "You are unstoppable",
+        "Your hard work will pay off",
+        "Keep pushing, you're almost there",
+        "You are a work in progress, and that's okay",
+        "Believe in yourself",
+        "You are worthy of your own love and respect",
+        "Today is your day",
+        "You've accomplished so much",
+        "Your potential is limitless",
+        "You are making progress every day",
+        "Don't give up, you're doing amazing",
+        "You are braver than you believe",
+        "Success starts with self-belief",
+        "You are the architect of your own success",
+        "Keep that positive energy flowing",
+        "You have the power within you",
+        "Every accomplishment starts with the decision to try",
+        "You are stronger than your challenges",
+        "Your dedication is inspiring",
+        "You are becoming who you want to be",
+        "The best is yet to come",
+        "You've overcome challenges before, you'll do it again",
+        "Your effort is noticed and appreciated",
+        "You are filled with endless potential",
+        "You deserve all the success coming your way",
+        "Today, you choose to be amazing",
+        "You are a fighter and a winner",
+        "Your goals are within reach",
+        "Keep believing in yourself",
+        "You are unstoppable when you put your mind to it",
+        "Progress looks good on you",
+        "You've earned this moment",
+        "Your dreams are achievable",
+        "You are doing better than you think"
+    ]
+
+    private static func randomAffirmation() -> String {
+        affirmations.randomElement() ?? "You've got this!"
+    }
 
     private var filteredChores: [Chore] {
         let pending = choreStore.pendingChores
@@ -55,7 +112,7 @@ struct HomeView: View {
             Spacer()
             HStack(spacing: 8) {
                 Button {
-                    affirmation = Affirmations.randomQuote()
+                    affirmation = Self.randomAffirmation()
                 } label: {
                     Image(systemName: "arrow.clockwise")
                         .font(.system(size: 16, weight: .medium))
