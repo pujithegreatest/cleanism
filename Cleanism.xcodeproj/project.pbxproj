@@ -26,7 +26,8 @@
 		CAC8E7ED861BDEED1159F1FC /* AddChoreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A4C54D561351D83BFCB738B /* AddChoreView.swift */; };
 		E37418F7269811C2D7D4662A /* ChoreDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 498D3DDED576F0DAD358D0A9 /* ChoreDetailView.swift */; };
 		E7DCA33C3AD80DCAC0D16335 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 634FA86AE2D9D2FB430E7999 /* SettingsView.swift */; };
-/* End PBXBuildFile section */
+				8CBDBE76C7EFF28F6EA99093 /* Affirmations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EA6D829C854E083B7E477C2 /* Affirmations.swift */; };
+	/* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		014A2EA761A6E36B59F89998 /* Chore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Chore.swift; sourceTree = "<group>"; };
@@ -50,7 +51,8 @@
 		D8DC880648D47CA3F209A3EC /* NativePhotoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NativePhotoView.swift; sourceTree = "<group>"; };
 		D9223FDEA9907F427A757586 /* EnvConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnvConfig.swift; sourceTree = "<group>"; };
 		E0ACB8CB787C34A99904438A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
-/* End PBXFileReference section */
+				3EA6D829C854E083B7E477C2 /* Affirmations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Affirmations.swift; sourceTree = "<group>"; };
+	/* End PBXFileReference section */
 
 /* Begin PBXGroup section */
 		33506AFBBFE652C588D01DC8 /* Views */ = {
@@ -212,6 +214,7 @@
 				277F333D75D66F8AE6ADA39A /* AppTheme.swift in Sources */,
 				750509989ABE908F98927C03 /* CameraView.swift in Sources */,
 				C22EF657F3BC40D1E951563F /* Chore.swift in Sources */,
+				8CBDBE76C7EFF28F6EA99093 /* Affirmations.swift in Sources */,
 				15CA24F6FDE1227937E6E532 /* ChoreCardView.swift in Sources */,
 				E37418F7269811C2D7D4662A /* ChoreDetailView.swift in Sources */,
 				158985300A4EEBAB1C5A2A4E /* ChoreStore.swift in Sources */,
