@@ -171,15 +171,13 @@ struct ChoreDetailView: View {
                                         .padding(12)
                                 }
                             }
-                            if chore.isCompleted {
-                                Button {
-                                    choreStore.updateChore(id: choreId) { $0.beforeImagePath = nil }
-                                } label: {
-                                    Image(systemName: "xmark.circle.fill")
-                                        .font(.system(size: 24))
-                                        .foregroundColor(.red)
-                                        .padding(8)
-                                }
+                            Button {
+                                choreStore.updateChore(id: choreId) { $0.beforeImagePath = nil }
+                            } label: {
+                                Image(systemName: "xmark.circle.fill")
+                                    .font(.system(size: 24))
+                                    .foregroundColor(.red)
+                                    .padding(8)
                             }
                         }
                     }
@@ -209,15 +207,13 @@ struct ChoreDetailView: View {
                                         .padding(12)
                                 }
                             }
-                            if chore.isCompleted {
-                                Button {
-                                    choreStore.updateChore(id: choreId) { $0.afterImagePath = nil }
-                                } label: {
-                                    Image(systemName: "xmark.circle.fill")
-                                        .font(.system(size: 24))
-                                        .foregroundColor(.red)
-                                        .padding(8)
-                                }
+                            Button {
+                                choreStore.updateChore(id: choreId) { $0.afterImagePath = nil }
+                            } label: {
+                                Image(systemName: "xmark.circle.fill")
+                                    .font(.system(size: 24))
+                                    .foregroundColor(.red)
+                                    .padding(8)
                             }
                         }
                     } else {
