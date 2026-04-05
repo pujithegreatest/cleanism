@@ -81,7 +81,7 @@ struct ChoreDetailView: View {
                 .environmentObject(choreStore)
                 .environmentObject(themeStore)
         }
-        .sheet(isPresented: $showEnlargedImage) {
+        .fullScreenCover(isPresented: $showEnlargedImage) {
             enlargedImageView(themeStore.colors)
         }
     }
@@ -89,15 +89,15 @@ struct ChoreDetailView: View {
     @ViewBuilder
     private func enlargedImageView(_ c: ThemeColors) -> some View {
         ZStack {
-            c.background.ignoresSafeArea()
+            Color.black.ignoresSafeArea()
 
             VStack {
                 HStack {
                     Spacer()
                     Button { showEnlargedImage = false } label: {
                         Image(systemName: "xmark.circle.fill")
-                            .font(.system(size: 24))
-                            .foregroundColor(c.secondaryText)
+                            .font(.system(size: 28))
+                            .foregroundColor(.white)
                     }
                     .padding(16)
                 }
@@ -107,8 +107,7 @@ struct ChoreDetailView: View {
                 if let img = selectedImageForEnlargement {
                     Image(uiImage: img)
                         .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .padding(16)
+                        .scaledToFit()
                 }
 
                 Spacer()
