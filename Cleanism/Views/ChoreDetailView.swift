@@ -82,12 +82,14 @@ struct ChoreDetailView: View {
                 .environmentObject(themeStore)
         }
         .fullScreenCover(isPresented: $showEnlargedImage) {
-            enlargedImageView(themeStore.colors)
+            if let img = selectedImageForEnlargement {
+                enlargedImageView(image: img, themeStore.colors)
+            }
         }
     }
 
     @ViewBuilder
-    private func enlargedImageView(_ c: ThemeColors) -> some View {
+    private func enlargedImageView(image: UIImage, _ c: ThemeColors) -> some View {
         ZStack {
             Color.black.ignoresSafeArea()
 
@@ -104,25 +106,15 @@ struct ChoreDetailView: View {
 
                 Spacer()
 
-                if let img = selectedImageForEnlargement {
-                    Image(uiImage: img)
-                        .resizable()
-                        .scaledToFit()
-                } else {
-                    Text("No image to display")
-                        .foregroundColor(.white)
-                }
+                Image(uiImage: image)
+                    .resizable()
+                    .scaledToFit()
 
                 Spacer()
             }
         }
         .onAppear {
-            print("DEBUG: Enlarged image view appeared. selectedImageForEnlargement: \(selectedImageForEnlargement != nil)")
-            if let img = selectedImageForEnlargement {
-                print("DEBUG: Image found, rendering. Size: \(img.size)")
-            } else {
-                print("DEBUG: selectedImageForEnlargement is nil!")
-            }
+            print("DEBUG: Enlarged image view appeared. Image size: \(image.size)")
         }
     }
 
