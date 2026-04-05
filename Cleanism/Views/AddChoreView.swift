@@ -325,34 +325,16 @@ struct AddChoreView: View {
         guard !desc.isEmpty else { return }
         isCreating = true
 
-        do {
-            let result = try await AIService.generateTaskFromDescription(
-                description: desc,
-                area: selectedArea.rawValue
-            )
-            choreStore.addChore(
-                name: result.taskName,
-                contextDescription: desc,
-                aiTip: result.tip,
-                areaTag: selectedArea,
-                dueDate: dueDate,
-                priority: priority,
-                estimatedMinutes: estimatedMinutes
-            )
-            dismiss()
-        } catch {
-            // Fallback with default tip
-            choreStore.addChore(
-                name: String(desc.prefix(30)),
-                contextDescription: desc,
-                aiTip: "Keep your space clean and organized. daily smart!",
-                areaTag: selectedArea,
-                dueDate: dueDate,
-                priority: priority,
-                estimatedMinutes: estimatedMinutes
-            )
-            dismiss()
-        }
+        choreStore.addChore(
+            name: String(desc.prefix(30)),
+            contextDescription: desc,
+            aiTip: "Keep your space clean and organized. daily smart!",
+            areaTag: selectedArea,
+            dueDate: dueDate,
+            priority: priority,
+            estimatedMinutes: estimatedMinutes
+        )
+        dismiss()
 
         isCreating = false
     }

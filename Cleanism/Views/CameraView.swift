@@ -200,41 +200,24 @@ struct CameraView: View {
         dismiss()
     }
 
-    // MARK: - Analyze
+    // MARK: - Create Chore from Photo
 
     private func analyzeImage(_ image: UIImage) async {
         isAnalyzing = true
-        errorMessage = nil
+        let imageName = ImageStore.save(image, name: UUID().uuidString)
 
-        guard let base64 = ImageStore.imageToBase64(image) else {
-            errorMessage = "Failed to process image."
-            isAnalyzing = false
-            return
-        }
+        choreStore.addChore(
+            name: "Clean Task",
+            beforeImagePath: imageName,
+            contextDescription: contextDescription,
+            aiTip: "Keep your space clean and organized. daily smart!",
+            areaTag: areaTag,
+            dueDate: dueDate,
+            priority: priority,
+            estimatedMinutes: estimatedMinutes
+        )
 
-        do {
-            let result = try await AIService.analyzeImage(base64Image: base64, contextDescription: contextDescription)
-            print("DEBUG: AI Analysis successful. Task: \(result.taskName)")
-
-            let imageName = ImageStore.save(image, name: UUID().uuidString)
-
-            choreStore.addChore(
-                name: result.taskName,
-                beforeImagePath: imageName,
-                contextDescription: contextDescription,
-                aiTip: result.tip,
-                areaTag: areaTag,
-                dueDate: dueDate,
-                priority: priority,
-                estimatedMinutes: estimatedMinutes
-            )
-
-            choreWasCreated = true
-            dismiss()
-        } catch {
-            isAnalyzing = false
-            print("DEBUG: AI Analysis Error: \(error.localizedDescription)")
-            errorMessage = "Analysis failed: \(error.localizedDescription)"
-        }
+        choreWasCreated = true
+        dismiss()
     }
 }
