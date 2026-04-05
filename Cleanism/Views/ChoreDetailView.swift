@@ -15,8 +15,6 @@ struct ChoreDetailView: View {
     @State private var isEditingDetails = false
     @State private var editedName = ""
     @State private var editedDescription = ""
-    @State private var showImageReplaceOptions = false
-    @State private var imageTypeToReplace: String?
 
     private var chore: Chore? { choreStore.choreById(choreId) }
 
@@ -80,22 +78,6 @@ struct ChoreDetailView: View {
         }
         .fullScreenCover(isPresented: $showBeforeCamera) {
             AfterCameraView(choreId: choreId, isBeforePhoto: true)
-                .environmentObject(choreStore)
-                .environmentObject(themeStore)
-        }
-        .fullScreenCover(isPresented: Binding(
-            get: { imageTypeToReplace == "before" },
-            set: { if !$0 { imageTypeToReplace = nil } }
-        )) {
-            AfterCameraView(choreId: choreId, isBeforePhoto: true)
-                .environmentObject(choreStore)
-                .environmentObject(themeStore)
-        }
-        .fullScreenCover(isPresented: Binding(
-            get: { imageTypeToReplace == "after" },
-            set: { if !$0 { imageTypeToReplace = nil } }
-        )) {
-            AfterCameraView(choreId: choreId)
                 .environmentObject(choreStore)
                 .environmentObject(themeStore)
         }
@@ -194,8 +176,7 @@ struct ChoreDetailView: View {
                                     HStack {
                                         Spacer()
                                         Button {
-                                            imageTypeToReplace = "before"
-                                            showImageReplaceOptions = true
+                                            showBeforeCamera = true
                                         } label: {
                                             Image(systemName: "pencil")
                                                 .foregroundColor(.white)
@@ -241,8 +222,7 @@ struct ChoreDetailView: View {
                                     HStack {
                                         Spacer()
                                         Button {
-                                            imageTypeToReplace = "after"
-                                            showImageReplaceOptions = true
+                                            showAfterCamera = true
                                         } label: {
                                             Image(systemName: "pencil")
                                                 .foregroundColor(.white)
