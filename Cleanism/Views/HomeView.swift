@@ -7,7 +7,7 @@ struct HomeView: View {
     @State private var selectedFilter: AreaTag? = nil
     @State private var affirmation = Self.randomAffirmation()
     @State private var showAddChore = false
-
+ 
     private static let affirmations = [
         "You are capable of amazing things",
         "Today is going to be a great day",

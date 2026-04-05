@@ -148,92 +148,52 @@ struct ChoreDetailView: View {
                 HStack(spacing: 10) {
                     // Before
                     if let path = chore.beforeImagePath, let img = ImageStore.load(name: path) {
-                        ZStack {
-                            Button {
-                                selectedImageForEnlargement = img
-                                showEnlargedImage = true
-                            } label: {
-                                ZStack(alignment: .bottomLeading) {
-                                    Image(uiImage: img)
-                                        .resizable()
-                                        .aspectRatio(contentMode: .fill)
-                                        .frame(height: 170)
-                                        .clipped()
-                                        .clipShape(RoundedRectangle(cornerRadius: 20))
-                                    Text("BEFORE")
-                                        .font(.system(size: 11, weight: .heavy))
-                                        .tracking(1)
-                                        .foregroundColor(.white)
-                                        .padding(.horizontal, 8)
-                                        .padding(.vertical, 3)
-                                        .background(Color.white.opacity(0.2))
-                                        .clipShape(RoundedRectangle(cornerRadius: 8))
-                                        .padding(12)
-                                }
-                            }
-                            if chore.isCompleted {
-                                VStack {
-                                    HStack {
-                                        Spacer()
-                                        Button {
-                                            showBeforeCamera = true
-                                        } label: {
-                                            Image(systemName: "pencil")
-                                                .foregroundColor(.white)
-                                                .padding(8)
-                                                .background(Color.black.opacity(0.5))
-                                                .clipShape(Circle())
-                                        }
-                                        .padding(8)
-                                    }
-                                    Spacer()
-                                }
+                        Button {
+                            selectedImageForEnlargement = img
+                            showEnlargedImage = true
+                        } label: {
+                            ZStack(alignment: .bottomLeading) {
+                                Image(uiImage: img)
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fill)
+                                    .frame(height: 170)
+                                    .clipped()
+                                    .clipShape(RoundedRectangle(cornerRadius: 20))
+                                Text("BEFORE")
+                                    .font(.system(size: 11, weight: .heavy))
+                                    .tracking(1)
+                                    .foregroundColor(.white)
+                                    .padding(.horizontal, 8)
+                                    .padding(.vertical, 3)
+                                    .background(Color.white.opacity(0.2))
+                                    .clipShape(RoundedRectangle(cornerRadius: 8))
+                                    .padding(12)
                             }
                         }
                     }
 
                     // After
                     if hasAfterImage, let path = chore.afterImagePath, let img = ImageStore.load(name: path) {
-                        ZStack {
-                            Button {
-                                selectedImageForEnlargement = img
-                                showEnlargedImage = true
-                            } label: {
-                                ZStack(alignment: .bottomLeading) {
-                                    Image(uiImage: img)
-                                        .resizable()
-                                        .aspectRatio(contentMode: .fill)
-                                        .frame(height: 170)
-                                        .clipped()
-                                        .clipShape(RoundedRectangle(cornerRadius: 20))
-                                    Text("AFTER")
-                                        .font(.system(size: 11, weight: .heavy))
-                                        .tracking(1)
-                                        .foregroundColor(.white)
-                                        .padding(.horizontal, 8)
-                                        .padding(.vertical, 3)
-                                        .background(Color.white.opacity(0.2))
-                                        .clipShape(RoundedRectangle(cornerRadius: 8))
-                                        .padding(12)
-                                }
-                            }
-                            if chore.isCompleted {
-                                VStack {
-                                    HStack {
-                                        Spacer()
-                                        Button {
-                                            showAfterCamera = true
-                                        } label: {
-                                            Image(systemName: "pencil")
-                                                .foregroundColor(.white)
-                                                .padding(8)
-                                                .background(Color.black.opacity(0.5))
-                                                .clipShape(Circle())
-                                        }
-                                        .padding(8)
-                                    }
-                                    Spacer()
-                                }
+                        Button {
+                            selectedImageForEnlargement = img
+                            showEnlargedImage = true
+                        } label: {
+                            ZStack(alignment: .bottomLeading) {
+                                Image(uiImage: img)
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fill)
+                                    .frame(height: 170)
+                                    .clipped()
+                                    .clipShape(RoundedRectangle(cornerRadius: 20))
+                                Text("AFTER")
+                                    .font(.system(size: 11, weight: .heavy))
+                                    .tracking(1)
+                                    .foregroundColor(.white)
+                                    .padding(.horizontal, 8)
+                                    .padding(.vertical, 3)
+                                    .background(Color.white.opacity(0.2))
+                                    .clipShape(RoundedRectangle(cornerRadius: 8))
+                                    .padding(12)
                             }
                         }
                     } else {
