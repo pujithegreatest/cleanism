@@ -20,7 +20,6 @@
 		71B91BCD55944FB435B3301C /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B585165546DC0533F6DFE550 /* ContentView.swift */; };
 		750509989ABE908F98927C03 /* CameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09E6932849836FE8F85D5E39 /* CameraView.swift */; };
 		758891FACBF1990C4047FC5D /* AfterCameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2839024C4394CAD7BA6EA47 /* AfterCameraView.swift */; };
-		7C0937C96F9CD47F317B9B45 /* AIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A530EAF2FAD72FE221D319A /* AIService.swift */; };
 		A2B08F231BD8808E0D77EB6C /* CleanismApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43BC8A0C52D56550F7B36189 /* CleanismApp.swift */; };
 		C22EF657F3BC40D1E951563F /* Chore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 014A2EA761A6E36B59F89998 /* Chore.swift */; };
 		CAC8E7ED861BDEED1159F1FC /* AddChoreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A4C54D561351D83BFCB738B /* AddChoreView.swift */; };
@@ -41,7 +40,6 @@
 		5A4C54D561351D83BFCB738B /* AddChoreView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddChoreView.swift; sourceTree = "<group>"; };
 		608BAB91F6B5E6D0813E8D8B /* HistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryView.swift; sourceTree = "<group>"; };
 		634FA86AE2D9D2FB430E7999 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
-		7A530EAF2FAD72FE221D319A /* AIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIService.swift; sourceTree = "<group>"; };
 		80F3E24F2E7CF0BBD259DD3E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		97B13CFE3F3D5027ABD834FC /* ImageStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageStore.swift; sourceTree = "<group>"; };
 		9EDEF9786632832208AFEFC9 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
@@ -90,7 +88,6 @@
 		662A0AC138C24958B791B764 /* Services */ = {
 			isa = PBXGroup;
 			children = (
-				7A530EAF2FAD72FE221D319A /* AIService.swift */,
 				D9223FDEA9907F427A757586 /* EnvConfig.swift */,
 				97B13CFE3F3D5027ABD834FC /* ImageStore.swift */,
 			);
@@ -206,7 +203,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7C0937C96F9CD47F317B9B45 /* AIService.swift in Sources */,
 				CAC8E7ED861BDEED1159F1FC /* AddChoreView.swift in Sources */,
 				758891FACBF1990C4047FC5D /* AfterCameraView.swift in Sources */,
 				277F333D75D66F8AE6ADA39A /* AppTheme.swift in Sources */,
