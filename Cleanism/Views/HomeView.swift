@@ -5,20 +5,8 @@ struct HomeView: View {
     @EnvironmentObject var themeStore: ThemeStore
 
     @State private var selectedFilter: AreaTag? = nil
-    @State private var motivationalMessage = Self.randomMessage()
+    @State private var affirmation = Affirmations.randomQuote()
     @State private var showAddChore = false
-
-    private static let messages = [
-        "A clean space is a clear mind",
-        "Small steps lead to big results",
-        "You are doing amazing",
-        "Every task completed is a win",
-        "Your future self will thank you",
-    ]
-
-    private static func randomMessage() -> String {
-        messages.randomElement()!
-    }
 
     private var filteredChores: [Chore] {
         let pending = choreStore.pendingChores
@@ -67,7 +55,7 @@ struct HomeView: View {
             Spacer()
             HStack(spacing: 8) {
                 Button {
-                    motivationalMessage = Self.randomMessage()
+                    affirmation = Affirmations.randomQuote()
                 } label: {
                     Image(systemName: "arrow.clockwise")
                         .font(.system(size: 16, weight: .medium))
@@ -101,7 +89,7 @@ struct HomeView: View {
 
     @ViewBuilder
     private func quote(_ c: ThemeColors) -> some View {
-        Text("\"\(motivationalMessage)\"")
+        Text("\"\(affirmation)\"")
             .font(.subheadline)
             .italic()
             .foregroundColor(c.secondaryText)

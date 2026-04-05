@@ -3,6 +3,7 @@ import SwiftUI
 struct HistoryView: View {
     @EnvironmentObject var choreStore: ChoreStore
     @EnvironmentObject var themeStore: ThemeStore
+    @State private var selectedChoreId: UUID?
 
     var body: some View {
         let c = themeStore.colors
@@ -23,6 +24,13 @@ struct HistoryView: View {
             }
             .background(c.background)
             .navigationBarHidden(true)
+            .navigationDestination(isPresented: .constant(selectedChoreId != nil)) {
+                if let choreId = selectedChoreId {
+                    ChoreDetailView(choreId: choreId)
+                        .environmentObject(choreStore)
+                        .environmentObject(themeStore)
+                }
+            }
         }
     }
 
@@ -119,57 +127,61 @@ struct HistoryView: View {
         } else {
             VStack(spacing: 12) {
                 ForEach(completed) { chore in
-                    HStack(spacing: 12) {
-                        if let path = chore.beforeImagePath, let img = ImageStore.load(name: path) {
-                            Image(uiImage: img)
-                                .resizable()
-                                .aspectRatio(contentMode: .fill)
-                                .frame(width: 96, height: 96)
-                                .clipped()
-                                .clipShape(RoundedRectangle(cornerRadius: 16))
-                        } else {
-                            RoundedRectangle(cornerRadius: 16)
-                                .fill(c.secondaryText.opacity(0.1))
-                                .frame(width: 96, height: 96)
-                                .overlay(
+                    Button {
+                        selectedChoreId = chore.id
+                    } label: {
+                        HStack(spacing: 12) {
+                            if let path = chore.beforeImagePath, let img = ImageStore.load(name: path) {
+                                Image(uiImage: img)
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fill)
+                                    .frame(width: 96, height: 96)
+                                    .clipped()
+                                    .clipShape(RoundedRectangle(cornerRadius: 16))
+                            } else {
+                                RoundedRectangle(cornerRadius: 16)
+                                    .fill(c.secondaryText.opacity(0.1))
+                                    .frame(width: 96, height: 96)
+                                    .overlay(
+                                        Image(systemName: chore.areaTag.iconName)
+                                            .font(.system(size: 24))
+                                            .foregroundColor(c.secondaryText.opacity(0.4))
+                                    )
+                            }
+
+                            VStack(alignment: .leading, spacing: 4) {
+                                HStack(spacing: 8) {
+                                    Image(systemName: "checkmark")
+                                        .font(.system(size: 10, weight: .bold))
+                                        .foregroundColor(.white)
+                                        .frame(width: 20, height: 20)
+                                        .background(c.success)
+                                        .clipShape(Circle())
+                                    Text(chore.name)
+                                        .font(.system(size: 16, weight: .bold))
+                                        .foregroundColor(c.text)
+                                        .lineLimit(1)
+                                }
+                                HStack(spacing: 4) {
                                     Image(systemName: chore.areaTag.iconName)
-                                        .font(.system(size: 24))
-                                        .foregroundColor(c.secondaryText.opacity(0.4))
-                                )
-                        }
+                                        .font(.system(size: 11))
+                                    Text(chore.areaTag.rawValue)
+                                        .font(.caption)
+                                }
+                                .foregroundColor(c.secondaryText)
 
-                        VStack(alignment: .leading, spacing: 4) {
-                            HStack(spacing: 8) {
-                                Image(systemName: "checkmark")
-                                    .font(.system(size: 10, weight: .bold))
-                                    .foregroundColor(.white)
-                                    .frame(width: 20, height: 20)
-                                    .background(c.success)
-                                    .clipShape(Circle())
-                                Text(chore.name)
-                                    .font(.system(size: 16, weight: .bold))
-                                    .foregroundColor(c.text)
-                                    .lineLimit(1)
+                                if let completedAt = chore.completedAt {
+                                    Text(completedAt.formatted(.dateTime.month(.abbreviated).day().hour().minute()))
+                                        .font(.caption)
+                                        .foregroundColor(c.secondaryText)
+                                }
                             }
-                            HStack(spacing: 4) {
-                                Image(systemName: chore.areaTag.iconName)
-                                    .font(.system(size: 11))
-                                Text(chore.areaTag.rawValue)
-                                    .font(.caption)
-                            }
-                            .foregroundColor(c.secondaryText)
-
-                            if let completedAt = chore.completedAt {
-                                Text(completedAt.formatted(.dateTime.month(.abbreviated).day().hour().minute()))
-                                    .font(.caption)
-                                    .foregroundColor(c.secondaryText)
-                            }
+                            Spacer()
                         }
-                        Spacer()
+                        .padding(4)
+                        .background(c.secondaryText.opacity(0.05))
+                        .clipShape(RoundedRectangle(cornerRadius: 20))
                     }
-                    .padding(4)
-                    .background(c.secondaryText.opacity(0.05))
-                    .clipShape(RoundedRectangle(cornerRadius: 20))
                 }
             }
             .padding(.horizontal, 24)

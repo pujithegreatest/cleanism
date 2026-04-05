@@ -10,6 +10,13 @@ struct ChoreDetailView: View {
     @State private var notesText = ""
     @State private var showAfterCamera = false
     @State private var showBeforeCamera = false
+    @State private var selectedImageForEnlargement: UIImage?
+    @State private var showEnlargedImage = false
+    @State private var isEditingDetails = false
+    @State private var editedName = ""
+    @State private var editedDescription = ""
+    @State private var showImageReplaceOptions = false
+    @State private var imageTypeToReplace: String?
 
     private var chore: Chore? { choreStore.choreById(choreId) }
 
@@ -76,6 +83,56 @@ struct ChoreDetailView: View {
                 .environmentObject(choreStore)
                 .environmentObject(themeStore)
         }
+        .fullScreenCover(isPresented: .constant(imageTypeToReplace != nil)) {
+            if imageTypeToReplace == "before" {
+                AfterCameraView(choreId: choreId, isBeforePhoto: true)
+                    .environmentObject(choreStore)
+                    .environmentObject(themeStore)
+                    .onDisappear {
+                        imageTypeToReplace = nil
+                    }
+            } else if imageTypeToReplace == "after" {
+                AfterCameraView(choreId: choreId)
+                    .environmentObject(choreStore)
+                    .environmentObject(themeStore)
+                    .onDisappear {
+                        imageTypeToReplace = nil
+                    }
+            }
+        }
+        .sheet(isPresented: $showEnlargedImage) {
+            enlargedImageView(themeStore.colors)
+        }
+    }
+
+    @ViewBuilder
+    private func enlargedImageView(_ c: ThemeColors) -> some View {
+        ZStack {
+            c.background.ignoresSafeArea()
+
+            VStack {
+                HStack {
+                    Spacer()
+                    Button { showEnlargedImage = false } label: {
+                        Image(systemName: "xmark.circle.fill")
+                            .font(.system(size: 24))
+                            .foregroundColor(c.secondaryText)
+                    }
+                    .padding(16)
+                }
+
+                Spacer()
+
+                if let img = selectedImageForEnlargement {
+                    Image(uiImage: img)
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .padding(16)
+                }
+
+                Spacer()
+            }
+        }
     }
 
     // MARK: - Image Section
@@ -110,44 +167,94 @@ struct ChoreDetailView: View {
                 HStack(spacing: 10) {
                     // Before
                     if let path = chore.beforeImagePath, let img = ImageStore.load(name: path) {
-                        ZStack(alignment: .bottomLeading) {
-                            Image(uiImage: img)
-                                .resizable()
-                                .aspectRatio(contentMode: .fill)
-                                .frame(height: 170)
-                                .clipped()
-                                .clipShape(RoundedRectangle(cornerRadius: 20))
-                            Text("BEFORE")
-                                .font(.system(size: 11, weight: .heavy))
-                                .tracking(1)
-                                .foregroundColor(.white)
-                                .padding(.horizontal, 8)
-                                .padding(.vertical, 3)
-                                .background(Color.white.opacity(0.2))
-                                .clipShape(RoundedRectangle(cornerRadius: 8))
-                                .padding(12)
+                        ZStack {
+                            Button {
+                                selectedImageForEnlargement = img
+                                showEnlargedImage = true
+                            } label: {
+                                ZStack(alignment: .bottomLeading) {
+                                    Image(uiImage: img)
+                                        .resizable()
+                                        .aspectRatio(contentMode: .fill)
+                                        .frame(height: 170)
+                                        .clipped()
+                                        .clipShape(RoundedRectangle(cornerRadius: 20))
+                                    Text("BEFORE")
+                                        .font(.system(size: 11, weight: .heavy))
+                                        .tracking(1)
+                                        .foregroundColor(.white)
+                                        .padding(.horizontal, 8)
+                                        .padding(.vertical, 3)
+                                        .background(Color.white.opacity(0.2))
+                                        .clipShape(RoundedRectangle(cornerRadius: 8))
+                                        .padding(12)
+                                }
+                            }
+                            if chore.isCompleted {
+                                VStack {
+                                    HStack {
+                                        Spacer()
+                                        Button {
+                                            imageTypeToReplace = "before"
+                                            showImageReplaceOptions = true
+                                        } label: {
+                                            Image(systemName: "pencil")
+                                                .foregroundColor(.white)
+                                                .padding(8)
+                                                .background(Color.black.opacity(0.5))
+                                                .clipShape(Circle())
+                                        }
+                                        .padding(8)
+                                    }
+                                    Spacer()
+                                }
+                            }
                         }
                     }
 
                     // After
                     if hasAfterImage, let path = chore.afterImagePath, let img = ImageStore.load(name: path) {
-                        Button { showAfterCamera = true } label: {
-                            ZStack(alignment: .bottomLeading) {
-                                Image(uiImage: img)
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fill)
-                                    .frame(height: 170)
-                                    .clipped()
-                                    .clipShape(RoundedRectangle(cornerRadius: 20))
-                                Text("AFTER")
-                                    .font(.system(size: 11, weight: .heavy))
-                                    .tracking(1)
-                                    .foregroundColor(.white)
-                                    .padding(.horizontal, 8)
-                                    .padding(.vertical, 3)
-                                    .background(Color.white.opacity(0.2))
-                                    .clipShape(RoundedRectangle(cornerRadius: 8))
-                                    .padding(12)
+                        ZStack {
+                            Button {
+                                selectedImageForEnlargement = img
+                                showEnlargedImage = true
+                            } label: {
+                                ZStack(alignment: .bottomLeading) {
+                                    Image(uiImage: img)
+                                        .resizable()
+                                        .aspectRatio(contentMode: .fill)
+                                        .frame(height: 170)
+                                        .clipped()
+                                        .clipShape(RoundedRectangle(cornerRadius: 20))
+                                    Text("AFTER")
+                                        .font(.system(size: 11, weight: .heavy))
+                                        .tracking(1)
+                                        .foregroundColor(.white)
+                                        .padding(.horizontal, 8)
+                                        .padding(.vertical, 3)
+                                        .background(Color.white.opacity(0.2))
+                                        .clipShape(RoundedRectangle(cornerRadius: 8))
+                                        .padding(12)
+                                }
+                            }
+                            if chore.isCompleted {
+                                VStack {
+                                    HStack {
+                                        Spacer()
+                                        Button {
+                                            imageTypeToReplace = "after"
+                                            showImageReplaceOptions = true
+                                        } label: {
+                                            Image(systemName: "pencil")
+                                                .foregroundColor(.white)
+                                                .padding(8)
+                                                .background(Color.black.opacity(0.5))
+                                                .clipShape(Circle())
+                                        }
+                                        .padding(8)
+                                    }
+                                    Spacer()
+                                }
                             }
                         }
                     } else {
@@ -305,11 +412,48 @@ struct ChoreDetailView: View {
 
     @ViewBuilder
     private func titleSection(_ chore: Chore, _ c: ThemeColors) -> some View {
-        Text(chore.name)
-            .font(.system(size: 24, weight: .bold))
-            .foregroundColor(c.text)
-            .padding(.horizontal, 20)
-            .padding(.bottom, 16)
+        HStack {
+            if isEditingDetails {
+                TextField("Task name", text: $editedName)
+                    .font(.system(size: 24, weight: .bold))
+                    .foregroundColor(c.text)
+            } else {
+                Text(chore.name)
+                    .font(.system(size: 24, weight: .bold))
+                    .foregroundColor(c.text)
+            }
+            Spacer()
+            if chore.isCompleted && !isEditingDetails {
+                Button {
+                    editedName = chore.name
+                    editedDescription = chore.contextDescription
+                    isEditingDetails = true
+                } label: {
+                    Image(systemName: "pencil")
+                        .font(.system(size: 16))
+                        .foregroundColor(c.primary)
+                        .padding(8)
+                        .background(c.primary.opacity(0.12))
+                        .clipShape(Circle())
+                }
+            }
+            if isEditingDetails {
+                Button {
+                    choreStore.updateChore(id: choreId, name: editedName, contextDescription: editedDescription)
+                    isEditingDetails = false
+                } label: {
+                    Text("Save")
+                        .font(.system(size: 12, weight: .semibold))
+                        .foregroundColor(.white)
+                        .padding(.horizontal, 12)
+                        .padding(.vertical, 6)
+                        .background(c.primary)
+                        .clipShape(Capsule())
+                }
+            }
+        }
+        .padding(.horizontal, 20)
+        .padding(.bottom, 16)
     }
 
     // MARK: - Badges

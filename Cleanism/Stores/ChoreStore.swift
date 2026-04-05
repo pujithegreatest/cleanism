@@ -83,6 +83,13 @@ class ChoreStore: ObservableObject {
         save()
     }
 
+    func updateChore(id: UUID, name: String, contextDescription: String) {
+        guard let index = chores.firstIndex(where: { $0.id == id }) else { return }
+        chores[index].name = name
+        chores[index].contextDescription = contextDescription
+        save()
+    }
+
     // MARK: - Queries
 
     func choreById(_ id: UUID) -> Chore? {
