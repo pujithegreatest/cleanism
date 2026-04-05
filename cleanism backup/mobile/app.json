@@ -1,0 +1,18 @@
+{
+  "expo": {
+    "name": "Cleanism",
+    "slug": "cleanism",
+    "scheme": "cleanism",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "newArchEnabled": true,
+    "icon": "./assets/icon.png",
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "edgeToEdgeEnabled": true
+    }
+  }
+}
