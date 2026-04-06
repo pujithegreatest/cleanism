@@ -749,13 +749,14 @@ struct ChoreDetailView: View {
             } else {
                 withAnimation(.easeInOut(duration: 0.4)) {
                     isCompletingAnimation = true
-                    choreStore.completeChore(id: choreId)
                 }
 
-                Task {
-                    await scoreHabitica()
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
-                        dismiss()
+                dismiss()
+
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                    choreStore.completeChore(id: choreId)
+                    Task {
+                        await scoreHabitica()
                     }
                 }
             }
