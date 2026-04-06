@@ -10,8 +10,6 @@ struct ChoreDetailView: View {
     @State private var notesText = ""
     @State private var showAfterCamera = false
     @State private var showBeforeCamera = false
-    @State private var selectedImageForEnlargement: UIImage?
-    @State private var showEnlargedImage = false
     @State private var isEditingDetails = false
     @State private var editedName = ""
     @State private var editedDescription = ""
@@ -81,41 +79,6 @@ struct ChoreDetailView: View {
                 .environmentObject(choreStore)
                 .environmentObject(themeStore)
         }
-        .fullScreenCover(isPresented: $showEnlargedImage) {
-            if let img = selectedImageForEnlargement {
-                enlargedImageView(image: img, themeStore.colors)
-            }
-        }
-    }
-
-    @ViewBuilder
-    private func enlargedImageView(image: UIImage, _ c: ThemeColors) -> some View {
-        ZStack {
-            Color.black.ignoresSafeArea()
-
-            VStack {
-                HStack {
-                    Spacer()
-                    Button { showEnlargedImage = false } label: {
-                        Image(systemName: "xmark.circle.fill")
-                            .font(.system(size: 28))
-                            .foregroundColor(.white)
-                    }
-                    .padding(16)
-                }
-
-                Spacer()
-
-                Image(uiImage: image)
-                    .resizable()
-                    .scaledToFit()
-
-                Spacer()
-            }
-        }
-        .onAppear {
-            print("DEBUG: Enlarged image view appeared. Image size: \(image.size)")
-        }
     }
 
     // MARK: - Image Section
@@ -151,27 +114,22 @@ struct ChoreDetailView: View {
                     // Before
                     if let path = chore.beforeImagePath, let img = ImageStore.load(name: path) {
                         ZStack(alignment: .topTrailing) {
-                            Button {
-                                selectedImageForEnlargement = img
-                                showEnlargedImage = true
-                            } label: {
-                                ZStack(alignment: .bottomLeading) {
-                                    Image(uiImage: img)
-                                        .resizable()
-                                        .aspectRatio(contentMode: .fill)
-                                        .frame(height: 170)
-                                        .clipped()
-                                        .clipShape(RoundedRectangle(cornerRadius: 20))
-                                    Text("BEFORE")
-                                        .font(.system(size: 11, weight: .heavy))
-                                        .tracking(1)
-                                        .foregroundColor(.white)
-                                        .padding(.horizontal, 8)
-                                        .padding(.vertical, 3)
-                                        .background(Color.white.opacity(0.2))
-                                        .clipShape(RoundedRectangle(cornerRadius: 8))
-                                        .padding(12)
-                                }
+                            ZStack(alignment: .bottomLeading) {
+                                Image(uiImage: img)
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fill)
+                                    .frame(height: 170)
+                                    .clipped()
+                                    .clipShape(RoundedRectangle(cornerRadius: 20))
+                                Text("BEFORE")
+                                    .font(.system(size: 11, weight: .heavy))
+                                    .tracking(1)
+                                    .foregroundColor(.white)
+                                    .padding(.horizontal, 8)
+                                    .padding(.vertical, 3)
+                                    .background(Color.white.opacity(0.2))
+                                    .clipShape(RoundedRectangle(cornerRadius: 8))
+                                    .padding(12)
                             }
                             Button {
                                 choreStore.updateChore(id: choreId) { $0.beforeImagePath = nil }
@@ -187,27 +145,22 @@ struct ChoreDetailView: View {
                     // After
                     if hasAfterImage, let path = chore.afterImagePath, let img = ImageStore.load(name: path) {
                         ZStack(alignment: .topTrailing) {
-                            Button {
-                                selectedImageForEnlargement = img
-                                showEnlargedImage = true
-                            } label: {
-                                ZStack(alignment: .bottomLeading) {
-                                    Image(uiImage: img)
-                                        .resizable()
-                                        .aspectRatio(contentMode: .fill)
-                                        .frame(height: 170)
-                                        .clipped()
-                                        .clipShape(RoundedRectangle(cornerRadius: 20))
-                                    Text("AFTER")
-                                        .font(.system(size: 11, weight: .heavy))
-                                        .tracking(1)
-                                        .foregroundColor(.white)
-                                        .padding(.horizontal, 8)
-                                        .padding(.vertical, 3)
-                                        .background(Color.white.opacity(0.2))
-                                        .clipShape(RoundedRectangle(cornerRadius: 8))
-                                        .padding(12)
-                                }
+                            ZStack(alignment: .bottomLeading) {
+                                Image(uiImage: img)
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fill)
+                                    .frame(height: 170)
+                                    .clipped()
+                                    .clipShape(RoundedRectangle(cornerRadius: 20))
+                                Text("AFTER")
+                                    .font(.system(size: 11, weight: .heavy))
+                                    .tracking(1)
+                                    .foregroundColor(.white)
+                                    .padding(.horizontal, 8)
+                                    .padding(.vertical, 3)
+                                    .background(Color.white.opacity(0.2))
+                                    .clipShape(RoundedRectangle(cornerRadius: 8))
+                                    .padding(12)
                             }
                             Button {
                                 choreStore.updateChore(id: choreId) { $0.afterImagePath = nil }
