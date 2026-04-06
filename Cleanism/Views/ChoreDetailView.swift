@@ -119,7 +119,7 @@ struct ChoreDetailView: View {
 
                 VStack {
                     HStack {
-                        Button { showEnlargedImage = false } label: {
+                        Button { enlargedImage = nil } label: {
                             Image(systemName: "xmark")
                                 .font(.system(size: 16, weight: .semibold))
                                 .foregroundColor(.white)
