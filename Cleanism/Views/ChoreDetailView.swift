@@ -661,9 +661,12 @@ struct ChoreDetailView: View {
                     isCompletingAnimation = true
                     choreStore.completeChore(id: choreId)
                 }
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
-                    enlargedImage = nil
-                    dismiss()
+
+                Task {
+                    await scoreHabitica()
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
+                        dismiss()
+                    }
                 }
             }
         } label: {
@@ -743,6 +746,28 @@ struct ChoreDetailView: View {
         dismiss()
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
             choreStore.deleteChore(id: choreId)
+        }
+    }
+
+    private func scoreHabitica() async {
+        let habiticaEnabled = UserDefaults.standard.bool(forKey: "habitica_enabled")
+        guard habiticaEnabled else { return }
+
+        let userID = UserDefaults.standard.string(forKey: "habitica_userID") ?? ""
+        let apiToken = UserDefaults.standard.string(forKey: "habitica_apiToken") ?? ""
+        let taskAlias = UserDefaults.standard.string(forKey: "habitica_taskAlias") ?? "cleanism"
+
+        guard !userID.isEmpty && !apiToken.isEmpty else {
+            print("[ChoreDetailView] Habitica credentials not configured")
+            return
+        }
+
+        do {
+            let client = HabiticaClient()
+            try await client.scoreTaskUp(userID: userID, apiToken: apiToken, taskAlias: taskAlias)
+            print("[ChoreDetailView] Successfully scored task in Habitica")
+        } catch {
+            print("[ChoreDetailView] Habitica scoring failed: \(error.localizedDescription)")
         }
     }
 }
