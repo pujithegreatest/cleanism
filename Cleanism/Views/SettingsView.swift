@@ -4,6 +4,11 @@ struct SettingsView: View {
     @EnvironmentObject var choreStore: ChoreStore
     @EnvironmentObject var themeStore: ThemeStore
 
+    @AppStorage("habitica_enabled") private var habiticaEnabled = false
+    @AppStorage("habitica_userID") private var habiticaUserID = ""
+    @AppStorage("habitica_apiToken") private var habiticaApiToken = ""
+    @AppStorage("habitica_taskAlias") private var habiticaTaskAlias = "cleanism"
+
     var body: some View {
         let c = themeStore.colors
         let completed = choreStore.completedChores
@@ -23,6 +28,7 @@ struct SettingsView: View {
                     statsOverview(c, completed: completed.count, rate: rate, topArea: topArea)
                     darkModeToggle(c)
                     themeSection(c)
+                    habiticaSection(c)
                     quickTips(c)
                     achievements(c, completedCount: completed.count)
                     appInfo(c)
@@ -262,6 +268,80 @@ struct SettingsView: View {
         .padding(16)
         .background(unlocked ? color.opacity(0.12) : c.secondaryText.opacity(0.06))
         .clipShape(RoundedRectangle(cornerRadius: 20))
+    }
+
+    @ViewBuilder
+    private func habiticaSection(_ c: ThemeColors) -> some View {
+        VStack(alignment: .leading, spacing: 0) {
+            HStack(spacing: 16) {
+                Image(systemName: "gamecontroller.fill")
+                    .font(.system(size: 20))
+                    .foregroundColor(c.primary)
+                    .frame(width: 40, height: 40)
+                    .background(c.primary.opacity(0.12))
+                    .clipShape(Circle())
+                VStack(alignment: .leading, spacing: 2) {
+                    Text("Habitica Integration")
+                        .font(.system(size: 16, weight: .semibold))
+                        .foregroundColor(c.text)
+                    Text("Sync completed tasks to Habitica")
+                        .font(.subheadline)
+                        .foregroundColor(c.secondaryText)
+                }
+                Spacer()
+                Toggle("", isOn: $habiticaEnabled)
+                    .labelsHidden()
+                    .tint(c.primary)
+            }
+            .padding(16)
+            .background(c.secondaryText.opacity(0.06))
+            .clipShape(RoundedRectangle(cornerRadius: 20))
+
+            if habiticaEnabled {
+                VStack(spacing: 14) {
+                    habiticaField(
+                        title: "User ID",
+                        placeholder: "Your Habitica User ID",
+                        text: $habiticaUserID,
+                        c: c
+                    )
+                    habiticaField(
+                        title: "API Token",
+                        placeholder: "Your Habitica API Token",
+                        text: $habiticaApiToken,
+                        c: c
+                    )
+                    habiticaField(
+                        title: "Task Alias",
+                        placeholder: "cleanism",
+                        text: $habiticaTaskAlias,
+                        c: c
+                    )
+                }
+                .padding(16)
+                .background(c.tertiary.opacity(0.08))
+                .clipShape(RoundedRectangle(cornerRadius: 16))
+            }
+        }
+        .padding(16)
+        .background(c.secondaryText.opacity(0.06))
+        .clipShape(RoundedRectangle(cornerRadius: 20))
+        .padding(.horizontal, 24)
+        .padding(.bottom, 24)
+    }
+
+    private func habiticaField(title: String, placeholder: String, text: Binding<String>, c: ThemeColors) -> some View {
+        VStack(alignment: .leading, spacing: 6) {
+            Text(title)
+                .font(.system(size: 13, weight: .semibold))
+                .foregroundColor(c.text)
+            TextField(placeholder, text: text)
+                .font(.system(size: 15))
+                .foregroundColor(c.text)
+                .padding(12)
+                .background(c.background)
+                .cornerRadius(12)
+        }
     }
 
     @ViewBuilder

@@ -662,6 +662,7 @@ struct ChoreDetailView: View {
                     choreStore.completeChore(id: choreId)
                 }
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
+                    enlargedImage = nil
                     dismiss()
                 }
             }
