@@ -80,7 +80,7 @@ struct CameraView: View {
 
                 Spacer()
 
-                VStack(spacing: 12) {
+                VStack(spacing: 16) {
                     if let error = errorMessage {
                         Text(error)
                             .font(.system(size: 14))
@@ -91,13 +91,15 @@ struct CameraView: View {
                             .clipShape(RoundedRectangle(cornerRadius: 12))
                     }
 
-                    Text("Happy with the photo? Choose an option below.")
+                    Text("Save this as your before photo?")
                         .font(.system(size: 15))
-                        .foregroundColor(.white.opacity(0.75))
+                        .foregroundColor(.white.opacity(0.8))
                         .multilineTextAlignment(.center)
 
                     VStack(spacing: 12) {
-                        Button { capturedImage = nil } label: {
+                        Button {
+                            capturedImage = nil
+                        } label: {
                             HStack(spacing: 8) {
                                 Image(systemName: "arrow.counterclockwise")
                                 Text("Retake")
@@ -105,48 +107,31 @@ struct CameraView: View {
                             .font(.system(size: 16, weight: .semibold))
                             .foregroundColor(.white)
                             .frame(maxWidth: .infinity)
-                            .padding(.vertical, 16)
+                            .padding(.vertical, 14)
                             .background(Color.white.opacity(0.15))
-                            .clipShape(RoundedRectangle(cornerRadius: 18))
+                            .clipShape(RoundedRectangle(cornerRadius: 16))
                         }
 
-                        HStack(spacing: 12) {
-                            Button {
-                                saveImageWithoutAI(image)
-                            } label: {
-                                HStack(spacing: 6) {
-                                    Image(systemName: "bolt.fill")
-                                    Text("Skip AI")
-                                }
-                                .font(.system(size: 16, weight: .semibold))
-                                .foregroundColor(.white)
-                                .frame(maxWidth: .infinity)
-                                .padding(.vertical, 16)
-                                .background(Color.white.opacity(0.2))
-                                .clipShape(RoundedRectangle(cornerRadius: 18))
+                        Button {
+                            saveImageWithoutAI(image)
+                        } label: {
+                            HStack(spacing: 8) {
+                                Image(systemName: "checkmark.circle.fill")
+                                Text("Save")
                             }
-
-                            Button {
-                                Task { await analyzeImage(image) }
-                            } label: {
-                                HStack(spacing: 8) {
-                                    Image(systemName: "sparkles")
-                                    Text("Analyze AI")
-                                }
-                                .font(.system(size: 16, weight: .bold))
-                                .foregroundColor(.white)
-                                .frame(maxWidth: .infinity)
-                                .padding(.vertical, 16)
-                                .background(
-                                    LinearGradient(colors: [c.primary, c.secondary], startPoint: .topLeading, endPoint: .bottomTrailing)
-                                )
-                                .clipShape(RoundedRectangle(cornerRadius: 18))
-                            }
+                            .font(.system(size: 16, weight: .bold))
+                            .foregroundColor(.white)
+                            .frame(maxWidth: .infinity)
+                            .padding(.vertical, 14)
+                            .background(
+                                LinearGradient(colors: [c.success, c.secondary], startPoint: .topLeading, endPoint: .bottomTrailing)
+                            )
+                            .clipShape(RoundedRectangle(cornerRadius: 16))
                         }
                     }
                 }
-                .padding(.horizontal, 24)
-                .padding(.bottom, 24)
+                .padding(.horizontal, 20)
+                .padding(.bottom, 20)
             }
         }
     }

@@ -13,6 +13,9 @@ struct ChoreDetailView: View {
     @State private var isEditingDetails = false
     @State private var editedName = ""
     @State private var editedDescription = ""
+    @State private var enlargedImage: UIImage?
+    @State private var showEnlargedImage = false
+    @State private var isCompletingAnimation = false
 
     private var chore: Chore? { choreStore.choreById(choreId) }
 
@@ -43,6 +46,13 @@ struct ChoreDetailView: View {
                 }
             } else {
                 notFoundView(c)
+            }
+        }
+        .onAppear {
+            if let chore {
+                print("[ChoreDetailView] Loaded chore: \(chore.name)")
+                print("[ChoreDetailView] Before image: \(chore.beforeImagePath ?? "nil")")
+                print("[ChoreDetailView] After image: \(chore.afterImagePath ?? "nil")")
             }
         }
         .navigationBarBackButtonHidden(true)
@@ -78,6 +88,41 @@ struct ChoreDetailView: View {
             AfterCameraView(choreId: choreId, isBeforePhoto: true)
                 .environmentObject(choreStore)
                 .environmentObject(themeStore)
+        }
+        .fullScreenCover(isPresented: $showEnlargedImage, onDismiss: {
+            print("[ChoreDetailView] Enlarged image dismissed")
+            enlargedImage = nil
+        }) {
+            ZStack {
+                Color.black.ignoresSafeArea()
+
+                if let img = enlargedImage {
+                    print("[ChoreDetailView] Displaying enlarged image - Size: \(img.size)")
+                    Image(uiImage: img)
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .ignoresSafeArea()
+                } else {
+                    print("[ChoreDetailView] Enlarged image is nil!")
+                    Color.black
+                }
+
+                VStack {
+                    HStack {
+                        Button { showEnlargedImage = false } label: {
+                            Image(systemName: "xmark")
+                                .font(.system(size: 16, weight: .semibold))
+                                .foregroundColor(.white)
+                                .padding(12)
+                                .background(Color.black.opacity(0.5))
+                                .clipShape(Circle())
+                        }
+                        Spacer()
+                    }
+                    .padding(20)
+                    Spacer()
+                }
+            }
         }
     }
 
@@ -131,15 +176,23 @@ struct ChoreDetailView: View {
                                     .clipShape(RoundedRectangle(cornerRadius: 8))
                                     .padding(12)
                             }
-                            Button {
-                                choreStore.updateChore(id: choreId) { $0.beforeImagePath = nil }
-                            } label: {
+                            .onTapGesture {
+                                print("[ChoreDetailView] Tapped BEFORE image - Size: \(img.size)")
+                                enlargedImage = img
+                                showEnlargedImage = true
+                            }
+                            Button(action: {
+                                choreStore.updateChore(id: choreId) { chore in
+                                    chore.beforeImagePath = nil
+                                }
+                            }) {
                                 Image(systemName: "xmark.circle.fill")
                                     .font(.system(size: 24))
                                     .foregroundColor(.red)
                                     .padding(8)
                             }
                         }
+                        .id("before-\(path)")
                     }
 
                     // After
@@ -162,15 +215,23 @@ struct ChoreDetailView: View {
                                     .clipShape(RoundedRectangle(cornerRadius: 8))
                                     .padding(12)
                             }
-                            Button {
-                                choreStore.updateChore(id: choreId) { $0.afterImagePath = nil }
-                            } label: {
+                            .onTapGesture {
+                                print("[ChoreDetailView] Tapped AFTER image - Size: \(img.size)")
+                                enlargedImage = img
+                                showEnlargedImage = true
+                            }
+                            Button(action: {
+                                choreStore.updateChore(id: choreId) { chore in
+                                    chore.afterImagePath = nil
+                                }
+                            }) {
                                 Image(systemName: "xmark.circle.fill")
                                     .font(.system(size: 24))
                                     .foregroundColor(.red)
                                     .padding(8)
                             }
                         }
+                        .id("after-\(path)")
                     } else {
                         Button { showAfterCamera = true } label: {
                             VStack(spacing: 8) {
@@ -583,14 +644,16 @@ struct ChoreDetailView: View {
 
     // MARK: - Complete Button
 
-    @ViewBuilder
     private func completeButton(_ chore: Chore, _ c: ThemeColors) -> some View {
         Button {
             if chore.isCompleted {
                 choreStore.uncompleteChore(id: choreId)
             } else {
-                choreStore.completeChore(id: choreId)
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                withAnimation(.easeInOut(duration: 0.4)) {
+                    isCompletingAnimation = true
+                    choreStore.completeChore(id: choreId)
+                }
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
                     dismiss()
                 }
             }
@@ -605,15 +668,13 @@ struct ChoreDetailView: View {
             .frame(maxWidth: .infinity)
             .padding(.vertical, 16)
             .background(
-                Group {
-                    if chore.isCompleted {
-                        c.secondaryText.opacity(0.3)
-                    } else {
-                        LinearGradient(colors: [c.success, c.secondary], startPoint: .topLeading, endPoint: .bottomTrailing)
-                    }
-                }
+                chore.isCompleted
+                    ? AnyView(Color(c.secondaryText).opacity(0.3))
+                    : AnyView(LinearGradient(colors: [c.success, c.secondary], startPoint: .topLeading, endPoint: .bottomTrailing))
             )
             .clipShape(RoundedRectangle(cornerRadius: 20))
+            .scaleEffect(isCompletingAnimation ? 0.95 : 1.0)
+            .opacity(isCompletingAnimation ? 0.8 : 1.0)
         }
         .padding(.horizontal, 20)
         .padding(.bottom, 24)

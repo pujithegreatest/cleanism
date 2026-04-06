@@ -12,21 +12,37 @@ enum ImageStore {
 
     static func save(_ image: UIImage, name: String) -> String? {
         ensureDirectory()
-        guard let data = image.jpegData(compressionQuality: 0.8) else { return nil }
+        // Convert HEIC and other formats to JPEG with aggressive compression
+        let scaledImage = image.withMaxDimension(800)
+        guard let data = scaledImage.jpegData(compressionQuality: 0.4) else {
+            print("[ImageStore] Failed to create JPEG data for \(name)")
+            return nil
+        }
         let filename = "\(name).jpg"
         let url = documentsDir.appendingPathComponent(filename)
         do {
             try data.write(to: url)
+            let sizeInMB = Double(data.count) / (1024 * 1024)
+            print("[ImageStore] Saved \(filename) - Size: \(String(format: "%.2f", sizeInMB))MB")
             return filename
         } catch {
+            print("[ImageStore] Failed to write \(filename): \(error)")
             return nil
         }
     }
 
     static func load(name: String) -> UIImage? {
         let url = documentsDir.appendingPathComponent(name)
-        guard let data = try? Data(contentsOf: url) else { return nil }
-        return UIImage(data: data)
+        guard let data = try? Data(contentsOf: url) else {
+            print("[ImageStore] Failed to load data for \(name)")
+            return nil
+        }
+        guard let image = UIImage(data: data) else {
+            print("[ImageStore] Failed to decode image from \(name)")
+            return nil
+        }
+        print("[ImageStore] Loaded \(name) - Size: \(image.size)")
+        return image
     }
 
     static func imageToBase64(_ image: UIImage) -> String? {
@@ -36,5 +52,20 @@ enum ImageStore {
     static func delete(name: String) {
         let url = documentsDir.appendingPathComponent(name)
         try? FileManager.default.removeItem(at: url)
+    }
+}
+
+extension UIImage {
+    func withMaxDimension(_ maxDimension: CGFloat) -> UIImage {
+        let size = self.size
+        let scale = min(maxDimension / size.width, maxDimension / size.height, 1.0)
+
+        if scale >= 1.0 { return self }
+
+        let newSize = CGSize(width: size.width * scale, height: size.height * scale)
+        let renderer = UIGraphicsImageRenderer(size: newSize)
+        return renderer.image { _ in
+            self.draw(in: CGRect(origin: .zero, size: newSize))
+        }
     }
 }
