@@ -13,9 +13,15 @@ struct ChoreDetailView: View {
     @State private var isEditingDetails = false
     @State private var editedName = ""
     @State private var editedDescription = ""
-    @State private var enlargedImage: UIImage?
-    @State private var showEnlargedImage = false
+    @State private var enlargedImage: UIImage? = nil
     @State private var isCompletingAnimation = false
+
+    private var showEnlargedImage: Binding<Bool> {
+        Binding(
+            get: { enlargedImage != nil },
+            set: { if !$0 { enlargedImage = nil } }
+        )
+    }
 
     private var chore: Chore? { choreStore.choreById(choreId) }
 
@@ -183,7 +189,6 @@ struct ChoreDetailView: View {
                             .onTapGesture {
                                 print("[ChoreDetailView] Tapped BEFORE image - Size: \(img.size)")
                                 enlargedImage = img
-                                showEnlargedImage = true
                             }
                             Button(action: {
                                 choreStore.updateChore(id: choreId) { chore in
@@ -222,7 +227,6 @@ struct ChoreDetailView: View {
                             .onTapGesture {
                                 print("[ChoreDetailView] Tapped AFTER image - Size: \(img.size)")
                                 enlargedImage = img
-                                showEnlargedImage = true
                             }
                             Button(action: {
                                 choreStore.updateChore(id: choreId) { chore in
