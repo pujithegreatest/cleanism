@@ -95,7 +95,7 @@ struct ChoreDetailView: View {
                 .environmentObject(choreStore)
                 .environmentObject(themeStore)
         }
-        .fullScreenCover(isPresented: $showEnlargedImage, onDismiss: {
+        .fullScreenCover(isPresented: showEnlargedImage, onDismiss: {
             print("[ChoreDetailView] Enlarged image dismissed")
             enlargedImage = nil
         }) {
