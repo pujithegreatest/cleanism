@@ -64,13 +64,13 @@ struct AfterCameraView: View {
 
                 Spacer()
 
-                VStack(spacing: 20) {
+                VStack(spacing: 16) {
                     Text(isBeforePhoto ? "Save this as your before photo?" : "Looking good! Save this as your after photo?")
                         .font(.system(size: 15))
                         .foregroundColor(.white.opacity(0.8))
                         .multilineTextAlignment(.center)
 
-                    HStack(spacing: 12) {
+                    VStack(spacing: 12) {
                         Button {
                             capturedImage = nil
                         } label: {
@@ -81,9 +81,9 @@ struct AfterCameraView: View {
                             .font(.system(size: 16, weight: .semibold))
                             .foregroundColor(.white)
                             .frame(maxWidth: .infinity)
-                            .padding(.vertical, 16)
+                            .padding(.vertical, 14)
                             .background(Color.white.opacity(0.15))
-                            .clipShape(RoundedRectangle(cornerRadius: 18))
+                            .clipShape(RoundedRectangle(cornerRadius: 16))
                         }
 
                         Button {
@@ -96,16 +96,16 @@ struct AfterCameraView: View {
                             .font(.system(size: 16, weight: .bold))
                             .foregroundColor(.white)
                             .frame(maxWidth: .infinity)
-                            .padding(.vertical, 16)
+                            .padding(.vertical, 14)
                             .background(
                                 LinearGradient(colors: [c.success, c.secondary], startPoint: .topLeading, endPoint: .bottomTrailing)
                             )
-                            .clipShape(RoundedRectangle(cornerRadius: 18))
+                            .clipShape(RoundedRectangle(cornerRadius: 16))
                         }
                     }
                 }
-                .padding(.horizontal, 24)
-                .padding(.bottom, 24)
+                .padding(.horizontal, 20)
+                .padding(.bottom, 20)
             }
         }
     }

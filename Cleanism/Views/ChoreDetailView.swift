@@ -650,7 +650,19 @@ struct ChoreDetailView: View {
     private func shareChore() {
         guard let chore else { return }
         let text = "\(chore.name)\n\n\(chore.aiTip)\n\nShared from Cleanism"
-        let av = UIActivityViewController(activityItems: [text], applicationActivities: nil)
+        var itemsToShare: [Any] = [text]
+
+        // Add before image if available
+        if let beforePath = chore.beforeImagePath, let beforeImg = ImageStore.load(name: beforePath) {
+            itemsToShare.append(beforeImg)
+        }
+
+        // Add after image if available
+        if let afterPath = chore.afterImagePath, let afterImg = ImageStore.load(name: afterPath) {
+            itemsToShare.append(afterImg)
+        }
+
+        let av = UIActivityViewController(activityItems: itemsToShare, applicationActivities: nil)
         if let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
            let root = scene.windows.first?.rootViewController {
             root.present(av, animated: true)
