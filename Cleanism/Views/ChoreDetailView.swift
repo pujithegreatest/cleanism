@@ -97,14 +97,18 @@ struct ChoreDetailView: View {
                 Color.black.ignoresSafeArea()
 
                 if let img = enlargedImage {
-                    print("[ChoreDetailView] Displaying enlarged image - Size: \(img.size)")
                     Image(uiImage: img)
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                         .ignoresSafeArea()
+                        .onAppear {
+                            print("[ChoreDetailView] Displaying enlarged image - Size: \(img.size)")
+                        }
                 } else {
-                    print("[ChoreDetailView] Enlarged image is nil!")
                     Color.black
+                        .onAppear {
+                            print("[ChoreDetailView] Enlarged image is nil!")
+                        }
                 }
 
                 VStack {
