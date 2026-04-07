@@ -77,6 +77,12 @@ class ChoreStore: ObservableObject {
         save()
     }
 
+    func resetAllData() {
+        chores.removeAll()
+        save()
+        print("[ChoreStore] All chores deleted")
+    }
+
     func addNote(id: UUID, note: String) {
         guard let index = chores.firstIndex(where: { $0.id == id }) else { return }
         chores[index].notes = note

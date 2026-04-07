@@ -31,6 +31,7 @@ struct SettingsView: View {
                     habiticaSection(c)
                     quickTips(c)
                     achievements(c, completedCount: completed.count)
+                    dataTools(c)
                     appInfo(c)
                 }
             }
@@ -342,6 +343,83 @@ struct SettingsView: View {
                 .background(c.background)
                 .cornerRadius(12)
         }
+    }
+
+    @ViewBuilder
+    private func dataTools(_ c: ThemeColors) -> some View {
+        VStack(alignment: .leading, spacing: 0) {
+            HStack(spacing: 16) {
+                Image(systemName: "trash.circle.fill")
+                    .font(.system(size: 20))
+                    .foregroundColor(Color(hex: "#EF4444"))
+                    .frame(width: 40, height: 40)
+                    .background(Color(hex: "#EF4444").opacity(0.12))
+                    .clipShape(Circle())
+                VStack(alignment: .leading, spacing: 2) {
+                    Text("Data Tools")
+                        .font(.system(size: 16, weight: .semibold))
+                        .foregroundColor(c.text)
+                    Text("Manage your tasks and app data")
+                        .font(.subheadline)
+                        .foregroundColor(c.secondaryText)
+                }
+                Spacer()
+            }
+            .padding(16)
+            .background(c.secondaryText.opacity(0.06))
+            .clipShape(RoundedRectangle(cornerRadius: 20))
+
+            VStack(spacing: 12) {
+                Button(action: resetAllData) {
+                    HStack(spacing: 12) {
+                        Image(systemName: "exclamationmark.triangle.fill")
+                            .font(.system(size: 16))
+                            .foregroundColor(.white)
+                        Text("Reset All Data")
+                            .font(.system(size: 16, weight: .semibold))
+                            .foregroundColor(.white)
+                        Spacer()
+                    }
+                    .frame(maxWidth: .infinity)
+                    .padding(14)
+                    .background(Color(hex: "#EF4444"))
+                    .clipShape(RoundedRectangle(cornerRadius: 16))
+                }
+
+                VStack(alignment: .leading, spacing: 6) {
+                    Text("Clear Everything")
+                        .font(.system(size: 13, weight: .semibold))
+                        .foregroundColor(c.text)
+                    Text("Delete all tasks, images, and reset the app to fresh state. This action cannot be undone.")
+                        .font(.system(size: 12))
+                        .foregroundColor(c.secondaryText)
+                        .lineSpacing(2)
+                }
+                .padding(12)
+                .background(Color(hex: "#EF4444").opacity(0.08))
+                .clipShape(RoundedRectangle(cornerRadius: 12))
+            }
+            .padding(16)
+            .background(c.tertiary.opacity(0.08))
+            .clipShape(RoundedRectangle(cornerRadius: 16))
+        }
+        .padding(16)
+        .background(c.secondaryText.opacity(0.06))
+        .clipShape(RoundedRectangle(cornerRadius: 20))
+        .padding(.horizontal, 24)
+        .padding(.bottom, 24)
+    }
+
+    private func resetAllData() {
+        choreStore.resetAllData()
+
+        // Clear all images
+        let fileManager = FileManager.default
+        let documentsDir = fileManager.urls(for: .documentDirectory, in: .userDomainMask)[0]
+        let choreImagesDir = documentsDir.appendingPathComponent("ChoreImages", isDirectory: true)
+        try? fileManager.removeItem(at: choreImagesDir)
+
+        print("[SettingsView] All data and images cleared")
     }
 
     @ViewBuilder
